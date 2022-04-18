@@ -1,0 +1,79 @@
+How to host the java Application with Database.
+
+1) create RDS database.
+2)launch Ec2 instance and allow port 22, 8080. Now IAM using centos machine.
+3) Copy public Ip of tomcat server and take ssh on mobaxtreme with authorised key.
+4) Install java & check its version.
+# yum install java -y
+# java --version
+5)download tomcat 8.5 version tar.gz file . copy this file from google and paste in mobaxtreme.
+
+# yum install wget -y
+# wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.78/bin/apache-tomcat-8.5.78.tar.gz --no-check-certificate
+# tar -xzf apache-tomcat-8.5.78.tar.gz
+# ls
+# cd apache-tomcat-8.5.78
+# ls
+6) now we have to add our application in webapps. so we have to drag our student.war file and drop in mobaxtreme.
+7) we have to move this file in webapps.
+
+# mv /home/centos/student.war webapps/
+# ls webapps/
+8) To go to bin directory in search of catalina.sh
+
+# cd ..
+# ./apache-tomcat-8.5.78/bin/catalina.sh start
+ 
+It show tomcat is started.
+9) # cd apache-tomcat-8.5.78
+   # ls
+10) To view the directory name of student.
+  # cd webapps/
+  # ls
+11) Copy public ip of server and ping on web.
+# ip:8080/student/
+12) we have to connect database with server. for that we are going to install mysql server.
+# yum install mysql -y
+13) after installing mysql, we need to used jdbc connector. so for that copy mysql-connector.jar file and paste in mobaxtreme
+
+# cd ..
+# ls
+# mv /home/centos/mysql-connector.jar lib/
+# ls lib/
+# ls conf 
+# vim conf/context.xml
+
+14) if vim is not found install vim
+# yum install vim -y
+# vim conf/context.xml
+
+<Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
+               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+               username="USERNAME" password="PASSWORD" driverClassName="com.mysql.jdbc.Driver"
+               url="jdbc:mysql://DB-ENDPOINT:3306/DATABASE"/>
+15) now we have to create schema
+# yum install mariadb-server -y
+# systemctl start mariadb
+# systemctl enable mariadb
+# mysql -u root 
+   >bye
+# mysql -u admin -h (endpoint of rds) -p
+
+16) if database isn't showing  then check security group
+# mariadb > show databases;
+          > create database studentapp;
+          > show databases;
+          > use studentapp;
+17) now copy rds file data & paste
+ # Mariadb > paste
+           > desc students;
+           > bye
+18) Open browser of student from & registered. If it unable to show table then
+ # ./bin/catalina.sh stop
+# ./bin/catalina.sh start
+# mysql -u admin -h endpoint -p
+   password-
+mariadb > use studentapp;
+        > select * from students;
+
+---------------------------------xxxxxxxxxxxxxxxxxxxxxxxxxxx----------------------------------

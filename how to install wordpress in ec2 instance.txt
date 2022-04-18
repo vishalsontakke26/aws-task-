@@ -1,0 +1,10 @@
+How to install WordPress in Ec2 Instance?
+
+1) launch WordPress ec2 instances.
+2) select an instance and go to action.
+3) then go to monitor& troubleshoot and check system logs.
+4) here we can find the password for WordPress.
+5) copy public IP and paste in browser
+# public-IP/wp-admin/
+6) enter username and password
+7) we can now log in to WordPress.

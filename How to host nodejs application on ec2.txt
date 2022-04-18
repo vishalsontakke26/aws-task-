@@ -1,0 +1,60 @@
+	
+How To Create AWS EC2 Instance And Host NodeJS Application With Nginx.
+
+1) launch instance ubuntu & allow ports 22, 80.
+2) Copy public IP and paste in mobaxtreme to take ssh
+ 
+# sudo -i
+# apt-get update -y
+# apt-get install nginx -y
+# systemctl start nginx
+# systemctl enable nginx
+# systemctl status nginx
+
+3) now Nginx is running & now we need to setup nodejs on the server.
+ 
+# apt-get update -y
+# apt-get install nodejs
+
+4) now install npm.
+
+# apt-get install npm -y
+
+5) check nodejs & npm version.
+# node --version
+# npm --version
+
+6)  Now we need to setup Nginx as a reverse proxy for Node js application.
+
+#  cd /etc/nginx/sites-available/
+# vim default
+  location / {  
+        proxy_pass http://private_ip_address:8080;  
+        proxy_http_version 1.1;  
+        proxy_set_header Upgrade $http_upgrade;  
+        proxy_set_header Connection 'upgrade';  
+        proxy_set_header Host $host;  
+        proxy_cache_bypass $http_upgrade;  
+     } 
+7) Test the configuration of Nginx 
+# sudo nginx -t  
+
+8)no we are creating our nodejs application. I am creating a directory "testapp"
+# mkdir testapp
+# cd testapp
+# npm install express
+
+9) Now let's create app.js and add some code.
+# sudo vim app.js  
+
+var express = require('express');  
+var app = express();  
+app.get('/', function(req, res){  
+   res.send("Hello World!");  
+});  
+app.listen(8080, 'private_ip_address');//
+
+10) now run the app node.js
+# node app.js
+
+11) go to browser and enter your public ip.

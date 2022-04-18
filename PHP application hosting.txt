@@ -1,0 +1,35 @@
+How to host PHP Application On EC2 Instance.
+
+1) Launch ec2 instance, here I am using ubuntu and allow ports 80 & 22
+2) Copy public IP
+ of instance for taking ssh.
+3)open mobaxtreme and paste public IP & authorized key.
+4)Now install the Apache server and PHP to run the PHP application.
+
+# apt update -y
+# apt install apache2 
+# apt install php libapache2-mod-php php-mysql -y
+
+5) open the browser and type public IP to check the apache default page. and we can see it.
+6) whenever a user goes to your web app the Apache server will return HTML files; that means index.html. So we are going to change the configuration and make it look for index.php first and then index.html if index.php is not available.
+
+# vim /etc/apache2/mods-enabled/dir.conf
+  
+  <IfModule mod_dir.c>  
+   DirectoryIndex index.php index.html index.cgi index.pl index.xhtml index.htm  
+</IfModule> 
+
+# systemctl start apache2
+# systemctl enable apache2
+# systemctl status apache2
+
+7)Create a PHP application that displays our files. here I am using 'Hello. Welcome to cloudblitz' and host.
+
+# cd /var/www/html
+# vim index.php
+<?php  
+   echo "Hello! welcome to cloudblitz.";  
+?>
+
+8) go to the browser and type your public IP. 
+9) If we fail to access then restart apache2 and check the status.

@@ -1,0 +1,67 @@
+Practical 1- create ami using instance access the same configuration by new maachine - (workarround in such case if we lost our private and we need same confuguration on another machine )
+Lounch ec2 - instance port httpd  enable - anywhere
+yum install httpd -y
+systemctl start httpd.service 
+systemctl enable httpd.service 
+curl -O https://www.free-css.com/assets/files/free-css-templates/download/page276/rubic.zip
+unzip rubic.zip 
+ls
+cd rubic/
+ls
+cd public_html/
+ll
+mv * /var/www/html/
+check wheter its congire orf  not by hitting ip on browser .
+if successfully done -terminet the machine .
+
+
+Now **** create ami using this intance and enable httpd  port  keep waiting until available 
+Now  hit IP adderess on browser 
+********************************************************************************************************************************************************************************
+practical 2- How to connect to a Linux EC2 instance if you lose your private key?
+
+steps -initial setup 
+lounch two amazon maachine linux 2 ,t2.micro enable with  public ip adderess
+ensure that both intanceses are use both instances use diffrenct aws key pairs
+enable port 22 for ssh on the both instances 
+name instance 1  as ( Original Instance ) and its attched root as ebs valume as original volume
+name instance 2 as ( temp instance ) and its attached root ebs volume as temp volume
+
+
+
+
+Orinal Instance 
+IP- 3.1.50.119
+Root valume --/dev/xvda
+Key-pairs-- original
+
+
+temp Instance 
+IP - 18.141.194.188
+Root volume -- /dev/xvda 
+kye pair- temp
+
+----Note ---for this one scenario ,lets assume that we have lost the private key for our original instance 
+*************************************
+ 
+steps -
+
+stop your original Ec2 Instance
+detach the root original volume form the original instance
+attach  Original volume to the temp instance
+copy the .ssh/authorized _key from the temp volume to original volume
+
+command-
+lsblk
+sudo mkdir /mnt/tempvol
+sudo mount -o nouuid /dev/xvdf1 /mnt/tempvol
+cp .ssh/authorized_keys /mnt/tempvol/home/ec2-user/.ssh/authorized_keys
+sudo ls -l /mnt/tempvol/home/ec2-user/.ssh
+sudo umount /mnt/tempvol
+
+detach the orignal volume form the temp instance 
+re-attach  the original volume to the orignal instance as the root volume (/dev/xvda)
+start the original instance and connect to the original instance using the key pair of your temp instance  
+
+
+

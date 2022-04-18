@@ -1,0 +1,8 @@
+How to host the static website in lambda
+
+1)create a function.
+2) creat new role with lambda permission.
+3)test the code and create a new event.
+4) add a trigger and select API gateway.
+5)create new API --->HTTP API --->open(security).
+6) Go to configure and copy the API gateway endpoint and paste in the browser.
